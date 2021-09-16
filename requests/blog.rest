@@ -1,7 +1,4 @@
 ###
-Get http://localhost:3003/
-
-###
 Get http://localhost:3003/api/blogs
 
 ###

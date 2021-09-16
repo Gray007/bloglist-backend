@@ -1,17 +1,4 @@
 const mongoose = require('mongoose')
-// const uniqueValidator = require('mongoose-unique-validator')
-
-const url = process.env.MONGODB_URI
-
-console.log('connecting to', url)
-
-mongoose.connect(url)
-  .then(() => {
-    console.log('connected to MongoDB')
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
 
 const blogSchema = new mongoose.Schema({
     title: String,
@@ -19,8 +6,6 @@ const blogSchema = new mongoose.Schema({
     url: String,
     likes: Number
 })
-
-// personSchema.plugin(uniqueValidator)
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
