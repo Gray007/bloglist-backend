@@ -1,0 +1,16 @@
+###
+Get http://localhost:3003/
+
+###
+Get http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json 
+
+{ 
+    "title": "Sneppy & Cheppy Browns big adventure",
+    "author": "Sneppy the Bagel",
+    "url": "https://i.redd.it/sfz33wxbnxk71.jpg",
+    "likes": "7777"
+}
