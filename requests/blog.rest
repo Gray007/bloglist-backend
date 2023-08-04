@@ -7,7 +7,7 @@ Content-Type: application/json
 
 { 
     "title": "Sneppy & Cheppy Browns big adventure",
-    "author": "Sneppy the Bagel",
+    "author": "Sneppy the Bagel rises like a phoenix",
     "url": "https://i.redd.it/sfz33wxbnxk71.jpg",
-    "likes": "7777"
+    "likes": "7778"
 }
