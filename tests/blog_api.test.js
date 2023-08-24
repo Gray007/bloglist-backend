@@ -6,19 +6,23 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const { getTokenandID } = require('../utils/auth')
 
-beforeEach(async () => {
-    await Blog.deleteMany({})
-
-    const blogObjects = helper.initialBlogs
-        .map(blog => new Blog(blog))
-
-    const promiseArray = blogObjects.map(blog => blog.save())
-
-    await Promise.all(promiseArray)
-})
+let token
+let userID
 
 describe('when there is initially some blogs saved', () => {
+    beforeEach(async () => {
+
+        await Blog.deleteMany({})
+        const blogObjects = helper.initialBlogs
+            .map(blog => new Blog(blog))
+
+        const promiseArray = blogObjects.map(blog => blog.save())
+
+        await Promise.all(promiseArray)
+    })
+
     test('correct amount of blogs are returned as json', async () => {
         const response = await api
             .get('/api/blogs')
@@ -37,10 +41,26 @@ describe('when there is initially some blogs saved', () => {
 })
 
 describe('addition of a new blog', () => {
+
+    beforeEach(async () => {
+
+        await Blog.deleteMany({})
+        await helper.initializeUsers();
+
+        [token, userID] = await getTokenandID(helper.initialUsers[0].username)
+
+        const blogObjects = helper.initialBlogs
+            .map(blog => new Blog({ ...blog, user: userID }))
+
+        const promiseArray = blogObjects.map(blog => blog.save())
+
+        await Promise.all(promiseArray)
+    })
     test('a valid blog can be added', async () => {
         const newBlog = {
             title: 'The title',
             author: 'Sir Sneppy the 3rd',
+            user: `${userID}`,
             url: '/title',
             likes: 100
         }
@@ -48,6 +68,7 @@ describe('addition of a new blog', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -70,18 +91,38 @@ describe('addition of a new blog', () => {
         })
     })
 
+    test('blog without authorization/token is not added', async () => {
+        const newBlog = {
+            title: 'The title',
+            author: 'Sir Sneppy the 3rd',
+            url: '/title',
+            likes: 100
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
 
     test('verify the likes property defaults to 0', async () => {
 
         const newBlog = {
             title: "Dani Cali",
             author: 'Not Sneppy',
+            user: `${userID}`,
             url: '/danicali',
         }
 
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(201)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -102,12 +143,14 @@ describe('addition of a new blog', () => {
         const newBlog = {
             title: "Something",
             author: 'Sneppy Forever',
+            user: `${userID}`,
             likes: 5
         }
 
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -118,6 +161,7 @@ describe('addition of a new blog', () => {
     test('blog without title is not added', async () => {
         const newBlog = {
             author: 'Sneppy Forever',
+            user: `${userID}`,
             url: '/something',
             likes: 5
         }
@@ -125,6 +169,7 @@ describe('addition of a new blog', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400)
 
         const blogsAtEnd = await helper.blogsInDb()
@@ -134,12 +179,28 @@ describe('addition of a new blog', () => {
 })
 
 describe('deletion of a blog', () => {
+    beforeEach(async () => {
+
+        await Blog.deleteMany({})
+        await helper.initializeUsers();
+
+        [token, userID] = await getTokenandID(helper.initialUsers[0].username)
+
+        const blogObjects = helper.initialBlogs
+            .map(blog => new Blog({ ...blog, user: userID }))
+
+        const promiseArray = blogObjects.map(blog => blog.save())
+
+        await Promise.all(promiseArray)
+    })
+
     test('deleting a specific blog removes it from the database', async () => {
         const blogsAtStart = await helper.blogsInDb()
         const blogToDelete = blogsAtStart[0]
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', `Bearer ${token}`)
             .expect(204)
 
         const blogsAtEnd = await helper.blogsInDb()

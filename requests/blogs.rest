@@ -1,0 +1,46 @@
+###
+Get http://localhost:3003/api/blogs
+
+###
+Get http://localhost:3003/api/blogs/64dd15329e1393b3c923cd07
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json 
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNuZXAzMyIsImlkIjoiNjRkZjcwZWExY2Q3ZTdhNDc5YTAzMzA4IiwiaWF0IjoxNjkyODgzNDQzfQ.j-hjuQ8XXXKIN-eBeuX0Qvzu6902JFpkjJT8verj5gQ
+
+{ 
+    "title": "Just a token bagel snepp33",
+    "url": "https://i.redd.it/sfz33wxbnxk71.jpg",
+    "author": "Sneppy the Great 33",
+    "likes": "300"
+}
+
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json 
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNoZXAiLCJpZCI6IjY0ZGQxNGFhOWUxMzkzYjNjOTIzY2NmYiIsImlhdCI6MTY5MjIxMDM4MX0.RzIZJoFD2_m1DTEQSdoyJVKLINKDXBv1qoNu_0UmSec
+
+{ 
+    "title": "Why the bagel is no Cheppy",
+    "url": "https://i.redd.it/sfz33wxbnxk71.jpg",
+    "author": "Mr Sneppy",
+    "likes": "300"
+}
+
+###
+PUT http://localhost:3003/api/blogs/64cf9da6bda5cf6bc674680d
+content-type: application/json
+
+{
+    "title": "The Bagel rises like a phoenix",
+    "author": "64dcabfa2a019863a4f0ec45",
+    "url": "https://i.redd.it/sfz33wxbnxk71.jpg",
+    "likes": 1500
+}
+
+###
+DELETE http://localhost:3003/api/blogs/64e75a39111ab8fcc6da5ada
+Content-Type: application/json 
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNuZXAzMyIsImlkIjoiNjRkZjcwZWExY2Q3ZTdhNDc5YTAzMzA4IiwiaWF0IjoxNjkyODgzNDQzfQ.j-hjuQ8XXXKIN-eBeuX0Qvzu6902JFpkjJT8verj5gQ

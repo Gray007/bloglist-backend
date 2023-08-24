@@ -1,0 +1,38 @@
+###
+GET http://localhost:3003/api/users/
+
+###
+Get http://localhost:3003/api/users/64dcabfa2a019863a4f0ec45
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Snep33",
+    "name": "Sneppy",
+    "password": "bagel"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Chep",
+    "name": "Cheppy",
+    "password": "brown"
+}
+
+###
+PUT http://localhost:3003/api/users/64dcabfa2a019863a4f0ec45
+content-type: application/json
+
+{
+    "username": "Snep",
+    "name": "Sneppy",
+    "password": "bagel"
+}
+
+###
+DELETE http://localhost:3003/api/users/64dcabfa2a019863a4f0ec45
