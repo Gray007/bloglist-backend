@@ -30,7 +30,6 @@ usersRouter.post('/', async (request, response) => {
     response.status(400).json({ error: 'Password less than 3 characters long' })
   }
 
-
 })
 
 module.exports = usersRouter
